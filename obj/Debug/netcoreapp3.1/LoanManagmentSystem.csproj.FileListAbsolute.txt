@@ -1,0 +1,14 @@
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.exe
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.deps.json
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.runtimeconfig.json
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.runtimeconfig.dev.json
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.dll
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\bin\Debug\netcoreapp3.1\LoanManagmentSystem.pdb
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.csproj.AssemblyReference.cache
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.AssemblyInfoInputs.cache
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.AssemblyInfo.cs
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.csproj.CoreCompileInputs.cache
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.dll
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.pdb
+C:\Users\THE-GREEN\Source\Repos\LoanManagmentSystem\LoanManagmentSystem\obj\Debug\netcoreapp3.1\LoanManagmentSystem.genruntimeconfig.cache
