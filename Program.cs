@@ -11,6 +11,7 @@ namespace LoanManagmentSystem
 
     class Program
     {
+
         public static Boolean LOGGED_IN = false;
         public static Boolean isAdminCreated = false;
         public static Boolean EXIT = false;
@@ -18,21 +19,9 @@ namespace LoanManagmentSystem
         public static double TotalWithdrawalMoneyToday = 0.0;
         public static double TotalReceivedLoanMoney = 0.0;
 
-        //to make console full screen 
-        [DllImport("kernel32.dll", ExactSpelling = true)]
-        private static extern IntPtr GetConsoleWindow();
-        private static IntPtr ThisConsole = GetConsoleWindow();
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-        private const int MAXIMIZE = 3;
-     
-
         static void Main(string[] args)
         {
-            //make console fullscreen
-            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
-            ShowWindow(ThisConsole, MAXIMIZE);
-          
+
             Menu Menus = new Menu();
             Home home;
             Loan loan;
@@ -41,13 +30,9 @@ namespace LoanManagmentSystem
             Payment payment;
             Customers customers;
             Report report;
-            //Create Files
-            File.AppendAllText(@"./customer.txt", "");
-            File.AppendAllText(@"./active_loans.txt", "");
-            File.AppendAllText(@"./loan_plan.txt", "");
-            File.AppendAllText(@"./loan_type.txt", "");
-            File.AppendAllText(@"./payment_log.txt", "");
 
+            //Create Files
+            
             
             //Setup Administrator
             Auth Administartor = new Auth();
