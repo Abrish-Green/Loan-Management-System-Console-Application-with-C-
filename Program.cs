@@ -12,109 +12,14 @@ namespace LoanManagmentSystem
     class Program
     {
 
-        public static Boolean LOGGED_IN = false;
-        public static Boolean isAdminCreated = false;
-        public static Boolean EXIT = false;
-        public static int TotalLoanRequestToday = 0;
-        public static double TotalWithdrawalMoneyToday = 0.0;
-        public static double TotalReceivedLoanMoney = 0.0;
 
         static void Main(string[] args)
         {
-
-            Menu Menus = new Menu();
-            Home home;
-            Loan loan;
-            LoanType loanType;
-            LoanPlan loanPlan;
-            Payment payment;
-            Customers customers;
-            Report report;
-
-            //Create Files
+            LogicCombiner start = new LogicCombiner();
             
-            
-            //Setup Administrator
-            Auth Administartor = new Auth();
-            loginSuccess:
-            //Verify Administrator  
-            if (LOGGED_IN)
-            {
-                MenuselectionPoint:      //used for looping back to this point from the goto point
-                Menus.menu1();
-                Console.Write("Select Service : _\b");
-                string choice = Console.ReadLine();
-                
-                try
-                {
-                    switch (int.Parse(choice))
-                    {
-                        case 1:
-                            home = new Home();
-                            break;
-                        case 2:
-                            loan = new Loan();
-                            break;
-                        case 3:
-                            payment = new Payment();
-                            break;
-                        case 4:
-                            loanPlan = new LoanPlan();
-                            break;
-                        case 5:
-                            loanType = new LoanType();
-                            break;
-                        case 6:
-                            customers = new Customers();
-                            break;
-                        case 7:
-                            report = new Report();
-                            break;
-                        case 8:
-                            EXIT = true;
-                            break;
-                        default:
-                            Console.WriteLine("No Service For This Selection.Please Use Numbers Between 1 - 6 only!");
-                            goto MenuselectionPoint;
-
-                    }
-                    if (!EXIT){
-                        goto MenuselectionPoint;
-                    }
-                    else{
-                        Console.WriteLine("Press Enter To EXIT....");
-                    }
-                }
-                catch (System.FormatException e) {
-                    //Console.WriteLine(e);
-                    Console.WriteLine("Wrong Input..Please Use Numbers only.Press Any Key To continue.For Exit Press 0");
-                    var back = Console.ReadLine();
-                    if (back != "0") {
-                        goto MenuselectionPoint;
-                    }
-                    
-                
-                }
-                
-            }
-            else
-            {
-                
-                    Console.Clear();
-                    Console.WriteLine("Please Try To Login With The Correct Credential.You 1 Trial Left");
-                    Administartor.LoginTrial();
-                    if (LOGGED_IN)
-                    {
-                         goto loginSuccess;
-                    }
-                    Console.WriteLine("Please Try Another Time....Press Enter To Exit...");
-                    
-            
-            }
-           
-            Console.Read();
-            
+ 
         }
+
 
 
     }

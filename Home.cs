@@ -8,6 +8,10 @@ namespace LoanManagmentSystem
     class Home
     {
         public Boolean GoOut = false;
+        //global Variables
+        public static int TotalLoanRequest = 0;
+        public static double TotalWithdrawalMoneyTodayInBirr = 0.0;
+        public static double TotalReceivedLoanMoneyInBirr = 0.0;
 
         public Home()
         {
@@ -16,7 +20,7 @@ namespace LoanManagmentSystem
 
                 MenuPoint:
 
-                new Menu().HomeMenu();
+                new Menu().GetMenu("HOME");
 
                 Console.Write("Select Service : _\b");
                 string choice = Console.ReadLine();
@@ -117,7 +121,16 @@ namespace LoanManagmentSystem
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
             Console.WriteLine("|\t\t\tView Recently WithDrawal Money  ");
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
-            Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Birr", Math.Round(Program.TotalWithdrawalMoneyToday, 2));
+            if (TotalWithdrawalMoneyTodayInBirr == 0)
+            {
+                Console.WriteLine("|\t\t\t No Transaction yet");
+
+            }
+            else
+            {
+                Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Birr", Math.Round(TotalWithdrawalMoneyTodayInBirr, 2));
+
+            }
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
         }
         public void TotalLoanRequestedToday()
@@ -125,7 +138,16 @@ namespace LoanManagmentSystem
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
             Console.WriteLine("|\t\t\tRecently Loan Requests ");
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
-            Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Requests", Program.TotalLoanRequestToday);
+            if (TotalLoanRequest == 0)
+            {
+                Console.WriteLine("|\t\t\t No Request");
+
+            }
+            else
+            {
+                Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Requests", TotalLoanRequest);
+
+            }
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
 
         }
@@ -135,7 +157,16 @@ namespace LoanManagmentSystem
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
             Console.WriteLine("|\t\t\tRecently Recived Money Today ");
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
-            Console.WriteLine("|\t\tTotal Recived Money Today[{0}] : {1} Birr", DateTime.Now, Math.Round(Program.TotalReceivedLoanMoney, 2));
+            if (TotalReceivedLoanMoneyInBirr == 0)
+            {
+                Console.WriteLine("|\t\t\t No Transaction");
+
+            }
+            else
+            {
+                Console.WriteLine("|\t\tTotal Recived Money Today[{0}] : {1} Birr", DateTime.Now, Math.Round(TotalReceivedLoanMoneyInBirr, 2));
+
+            }
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
 
         }

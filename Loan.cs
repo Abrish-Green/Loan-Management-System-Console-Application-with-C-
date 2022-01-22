@@ -20,7 +20,7 @@ namespace LoanManagmentSystem
         public string loanPurpose;
         public double loanAmount;
         public string LoanGrant;
-        public string loanDate;
+        public string loanDate = DateTime.Now.ToString();
 
         double TotalPayableAmount;
         double MonthlyPayableAmount;
@@ -28,14 +28,14 @@ namespace LoanManagmentSystem
         string RejectionReason;
         public Boolean GoOut = false;
 
-
+        Utilits utilits = new Utilits();
         public Loan()
         {
             try {
 
                 MenuPoint:
 
-                new Menu().loanMenu();
+                new Menu().GetMenu("LOAN");
 
                 Console.Write("Select Service : _\b");
                 string choice = Console.ReadLine();
@@ -62,20 +62,29 @@ namespace LoanManagmentSystem
                         }
                         else
                         {
-                            requestLoan();
+                            AnswerLoanRequest();
+                            Console.WriteLine("Press Enter To Continue...");
+                            Console.Read();
                         }
 
                         
                        
                         break;
                     case "2":
-                        viewLoanList();
+                        viewLoanList("ALL");
+                        Console.WriteLine("Press Enter To Continue...");
+                        Console.Read();
                         break;
+
                     case "3":
-                        viewApprovedLoan();
+                        viewLoanList("ACCEPTED");
+                        Console.WriteLine("Press Enter To Continue...");
+                        Console.Read();
                         break;
                     case "4":
-                        viewRejectedLoan();
+                        viewLoanList("REJECTED");
+                        Console.WriteLine("Press Enter To Continue...");
+                        Console.Read();
                         break;
                     case "5":
                         GoOut = true;
@@ -101,193 +110,54 @@ namespace LoanManagmentSystem
             
         }
 
-        public void requestLoan()
-        {
-            //username
-            //job position
-            //loan plan
-            //loan type
-            //purpose
-            //provide salary and document
-
-            //Enter Personal Information
-           Program.TotalLoanRequestToday += 1;
-           try {
-                Console.WriteLine("|-----------------------------------------------------------------------|");
-                Console.WriteLine("|\t\t\t\tRequest Loan \t\t\t\t|");
-                Console.WriteLine("|-----------------------------------------------------------------------|");
-
-                Console.Write("Enter Borrower's First Name: ");
-                borrowerFirstName = Console.ReadLine();
-
-                Console.Write("Enter Borrower's Last Name: ");
-                borrowerLastName = Console.ReadLine();
-
-                Console.Write("Enter Borrower's Middle Name: ");
-                borrowerMiddleName = Console.ReadLine();
-
-                Console.Write("Enter Sex: [ Male | Female ]:");
-                borrowerSex = Console.ReadLine();
-
-                Console.Write("Enter Address: ");
-                borrowerAddres = Console.ReadLine();
-
-                Console.Write("Enter Phone: ");
-                borrowerPhone = Console.ReadLine();
-
-
-                //Enter Loan Information
-
-                Console.Write("Enter Monthly Salary: ");
-                var borrowerSalaryTemp = Console.ReadLine();
-                double.TryParse(borrowerSalaryTemp, out borrowerSalary);
-
-
-
-                Console.WriteLine("Enter Loan Type [Notice: Use Their ID For Selection]: ");
-                LoanType.listLoanType();
-                loanType = Console.ReadLine();
-
-
-                Console.WriteLine("Enter Loan Plan [Notice: Use Their ID For Selection]: ");
-                LoanPlan.viewLoanPlan();
-                loanPlan = int.Parse(Console.ReadLine());
-                //Console.WriteLine(loanPlan);
-               
-                Console.Write("Enter Loan Amount: ");
-                double.TryParse(Console.ReadLine(), out loanAmount);
-
-
-                Console.Write("Enter Loan Purpose: ");
-                loanPurpose = Console.ReadLine();
-
-                //Console.Read();
-                //Calculate for Grant
-
-                //Console.WriteLine(LoanPlan.getLoanPlan(int.Parse(loanPlan)));
-                string response = LoanPlan.getLoanPlan(loanPlan);
-                //Console.WriteLine(response);
-               
-                Console.WriteLine("To Calculate Loan Details [HIT Enter Key]");
-                Console.Read();
-                
-
-                calculateLoanGrant(loanAmount, Convert.ToDouble(response.Split(" ")[2]), Convert.ToInt32(response.Split(" ")[1]), Convert.ToDouble(response.Split(" ")[3]));
-                policyAndConditions(loanAmount, Convert.ToDouble(response.Split(" ")[2]), Convert.ToInt32(response.Split(" ")[1]), Convert.ToDouble(response.Split(" ")[3]));
-                Console.Read();
-
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine(e);
-
-                Console.WriteLine("There Has Been An Error.Please Come back later...");
-                Console.Read();
-            }
-            
-
-
-        }
-
-        public void calculateLoanGrant(double loanAmount, double interestRate, int totalMonth, double OverDuesPenaltyRate)
+       
+        public void AnswerLoanRequest()
         {
 
-            //Console.WriteLine("{0} {1} {2} {3}",interestRate,totalMonth,OverDuesPenaltyRate,loanAmount);
-            //formula A = P (r (1+r)^n) / ( (1+r)^n -1 )
-            //formula monthly = P*r(1+r)^n
-            //                  (1+r)^n - 1
-
-            double p = loanAmount;
-            double r = (interestRate/100)/12; 
-            int n = totalMonth;
-            double monthlyUpper = p * (r) * Math.Pow(1 + (r),n);
-            double monthlyLower = Math.Pow(1 + r, n) - 1;
-
-            double monthlyRate = (interestRate / 12)/100;
-            MonthlyPayableAmount = monthlyUpper/monthlyLower;
-            OverDuesPenaltyRate = OverDuesPenaltyRate / 12;
-            OverDuesPenaltyRate = OverDuesPenaltyRate / 100;
-            TotalPayableAmount = MonthlyPayableAmount*totalMonth;
-            MonthlyPenalty = loanAmount * OverDuesPenaltyRate;
-            
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.WriteLine("\t\t\tLoan Detail");
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.WriteLine("|\t Total Payable Amount : {0} BIRR",Math.Round(TotalPayableAmount, 2) );
-            Console.WriteLine("|\t Monthly Payable Amount: {0} BIRR", Math.Round(MonthlyPayableAmount,2));
-            Console.WriteLine("|\t Over Due's Penalty Amount: {0} BIRR", Math.Round(MonthlyPenalty,2));
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.Read();
            
-        }
 
-        public void policyAndConditions(double loanAmount, double interestRate, int totalMonth, double OverDuesPenaltyRate)
-        {
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.WriteLine("|\t\t\t\t Terms And Policy \t\t\t\t|");
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.WriteLine("| According to the Terms and Policy Mr/Ms {0} requested a loan and he/she Must agree to the terms and policy to get this Loan.",borrowerFirstName+" "+borrowerLastName);
-            Console.WriteLine("| 1.The Borrower Should Receive the Loan according to the date defined by the Loaner");
-            Console.WriteLine("| 2.The Borrower Requested a loan to {0} BIRR",loanAmount);
-            Console.WriteLine("| 3.The Borrower Should Agree to {0} % Interest Rate.",interestRate);
-            Console.WriteLine("| 4.The Borrower Must repay the loan in {0} Month or Before otherwise There Would be Penalty's.",totalMonth);
-            Console.WriteLine("| 5.The Borrower Should Pay Monthly Payment of {0} BIRR.", Math.Round(MonthlyPayableAmount,2));
-            Console.WriteLine("| 6.If Borrower Didn't Pay his/her Monthly Payment in Time they Must pay an Penalty of {0} BIRR.", Math.Round(MonthlyPenalty,2));
-            Console.WriteLine("| 7.By the End of the Term the Borrower Should pay Total Money of {0} BIRR", Math.Round(TotalPayableAmount,2));
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-
-            Console.WriteLine("|-----------------------------------------------------------------------|");
-            Console.Write("\n|\tDo The Borrower Agree To The Terms And Conditions ?[Y/N]: ");
-            var Choice = Console.ReadLine();
-
-
-            switch (Choice)
+            //select user
+            if (viewLoanList("PENDING"))
             {
-                case "Y":
-                case "y":
+                Console.WriteLine("Select User To Give Response[Use User ID]: ");
+                string User_id = Console.ReadLine();
+                User_id = utilits.InputVarAndValidate(User_id, "int", "UserID")[2].ToString();
 
-                    Console.WriteLine("|-----------------------------------------------------------------------|");
-                    Console.Write("|\t Do You[Administrator] Approve The Loan ?[Y/N]: ");
+                Console.WriteLine("Do You Accept the Loan?[Y/N]:");
+                string AcceptOrReject = Console.ReadLine();
+                AcceptOrReject = utilits.InputVarAndValidate(AcceptOrReject, "string", "Y/y or N/n")[2].ToString();
 
-                    var LoanerChoice = Console.ReadLine();
-                    switch (LoanerChoice)
-                    {
-                        case "Y":
-                        case "y":
-                            //save to file
-                            LoanGrant = "GRANTED";
-                            loanDate = DateTime.Now.ToString();
-                            AddLoanInformation(null); //null - for no rejection reason
-                            Customers.AddCustomer(borrowerFirstName, borrowerLastName, borrowerMiddleName, borrowerSex, borrowerAddres, borrowerPhone);
-                            Console.WriteLine("|--------------------------------------------------------------------------------------------------|");
-                            Console.WriteLine("| Loan Has be GRANTED SUCCESSFULLY.Congradulations Mr/Ms {0}...!", borrowerFirstName + " " + borrowerLastName);
-                            Console.WriteLine("|--------------------------------------------------------------------------------------------------|");
-                            Program.TotalWithdrawalMoneyToday += loanAmount;
-                            break;
-                        default:
-                            LoanGrant = "REJECTED";
-                            Console.WriteLine("|-----------------------------------------------------------------------|");
-                            Console.WriteLine("\t Please Provide a Loan REJECTION reason : ");
-                            RejectionReason = Console.ReadLine();
-                            AddLoanInformation(RejectionReason);
-                            Customers.AddCustomer(borrowerFirstName, borrowerLastName, borrowerMiddleName, borrowerSex, borrowerAddres, borrowerPhone);
-                            Console.WriteLine("|-----------------------------------------------------------------------|");
-                            Console.WriteLine("\t Rejection Reason Has been  Saved.");
-                            break;
-                    }
-                    break;
-                default:
-                    LoanGrant = "REJECTED";
-                    Console.WriteLine("|-----------------------------------------------------------------------|");
-                    Console.WriteLine("\t Please Provide a Loan REJECTION reason : ");
-                    RejectionReason = Console.ReadLine();
-                    AddLoanInformation(RejectionReason);
-                    Customers.AddCustomer(borrowerFirstName, borrowerLastName, borrowerMiddleName, borrowerSex, borrowerAddres, borrowerPhone);
-                    Console.WriteLine("|-----------------------------------------------------------------------|");
-                    Console.WriteLine("\t The Loan Has Been REJECTED.");
-                    break;
+                switch (AcceptOrReject)
+                {
+                    case "Y":
+                    case "y":
+                        //save to file
+                        LoanGrant = "ACCEPTED";
+                        UpdateLoanStatus(int.Parse(User_id), "ACCEPTED", null);
+
+                        //AddLoanInformation(null); //null - for no rejection reason
+                        //trace customer info
+                        Customers.AddCustomer(borrowerFirstName, borrowerLastName, borrowerMiddleName, borrowerSex, borrowerAddres, borrowerPhone);
+
+                        Console.WriteLine("|--------------------------------------------------------------------------------------------------|");
+                        Console.WriteLine("| Loan Has be Accepted.");
+                        Console.WriteLine("|--------------------------------------------------------------------------------------------------|");
+                        Home.TotalWithdrawalMoneyTodayInBirr += loanAmount;
+                        break;
+                    default:
+                        LoanGrant = "REJECTED";
+                        Console.WriteLine("|-----------------------------------------------------------------------|");
+                        Console.WriteLine("| Please Provide a Loan REJECTION reason : ");
+                        RejectionReason = Console.ReadLine();
+                        RejectionReason = utilits.InputVarAndValidate(RejectionReason, "string", "Rejection Reason")[2].ToString();
+                        //AddLoanInformation(RejectionReason);
+                        UpdateLoanStatus(int.Parse(User_id), "REJECTED", RejectionReason);
+                        Customers.AddCustomer(borrowerFirstName, borrowerLastName, borrowerMiddleName, borrowerSex, borrowerAddres, borrowerPhone);
+                        Console.WriteLine("|-----------------------------------------------------------------------|");
+                        Console.WriteLine("|Rejection Reason Has been  Saved.");
+                        break;
+                }
             }
-            
 
         }
         
@@ -302,24 +172,25 @@ namespace LoanManagmentSystem
             }
             else
             {
-                line = borrowerFirstName + "|" + borrowerLastName + "|" + borrowerMiddleName + "|" + borrowerPhone + "|" + borrowerSalary + "|" + loanType + "|" + loanPlan + "|" + loanPurpose + "|" + loanAmount + "|" + TotalPayableAmount + "|" + MonthlyPayableAmount + "|" + MonthlyPenalty + "|" + LoanGrant + "| None" + "|" + loanDate;
+                line = borrowerFirstName + "|" + borrowerLastName + "|" + borrowerMiddleName + "|" + borrowerPhone + "|" + borrowerSalary + "|" + loanType + "|" + loanPlan + "|" + loanPurpose + "|" + loanAmount + "|" + TotalPayableAmount + "|" + MonthlyPayableAmount + "|" + MonthlyPenalty + "|" + LoanGrant + "|None" + "|" + loanDate;
                 File.AppendAllText(@"./active_loans.txt", line + Environment.NewLine);
 
             }
         }
 
-        public void viewLoanList()
+        public Boolean viewLoanList(string DisplayType)
         {
-            //Loan granted date
-            //loan type
-            //loan plan
-            //interest
-            //monthly payment
+           
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("| \t\t\t List of Loans ");
+            Console.WriteLine("| \t\t\t List of {0} Loans ",DisplayType);
             Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
             List<string> rows = new List<string>();
             var tempoLine = "";
+            bool pending = true;
+            bool accepted = true;
+            bool rejected = true;
+            bool result = true;
+
             foreach (char letter in File.ReadAllText("./active_loans.txt"))
             {
 
@@ -338,84 +209,33 @@ namespace LoanManagmentSystem
             }
 
             var counter = 0;
-            if(File.ReadAllText("./active_loans.txt").Length == 0)
-            {
-                Console.WriteLine("No Database");
-            }
+           
 
             foreach (string line in rows)
             {
                 counter++;
                 var eachLine = line.Split("|", StringSplitOptions.RemoveEmptyEntries);
 
-                Console.WriteLine("----[ {0} ]-----------------------------------------------------------------------------------", eachLine[0]+" "+ eachLine[1]);
-                Console.WriteLine("{0,-5}: {1} ", "ID", counter);
-                Console.WriteLine("{0,-5}: {1} ", "First Name", eachLine[0]);
-                Console.WriteLine("{0,-5}: {1} ", "Last Name", eachLine[1]);
-                Console.WriteLine("{0,-5}: {1} ", "Middle Name", eachLine[2]);
-                Console.WriteLine("{0,-5}: {1} ", "Phone", eachLine[3]);
-                Console.WriteLine("{0,-5}: {1} ", "Salary", eachLine[4]);
-                Console.WriteLine("{0,-5}: {1} ", " Date", eachLine[14]);
-                Console.WriteLine("{0,-5}: {1} ", "Loan Type", eachLine[5]);
-                Console.WriteLine("{0,-5}: {1} ", "Loan Plan", eachLine[6]);
-                Console.WriteLine("{0,-5}: {1} ", "Loan Purpose", eachLine[7]);
-                Console.WriteLine("{0,-5}: {1} ", "Loan Amount", eachLine[8]);
-                Console.WriteLine("{0,-5}: {1} ", "Total Loan Payment", Math.Round(double.Parse(eachLine[9]),2));
-                Console.WriteLine("{0,-5}: {1} ", "Monthly Payment", Math.Round(double.Parse(eachLine[10]), 2));
-                Console.WriteLine("{0,-5}: {1} ", "Over Due's Penalty", Math.Round(double.Parse(eachLine[11]), 2));
-
-
-                Console.WriteLine("---------------------------------------------------------------------------------------------");
-            }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Press Enter To Continue...");
-            Console.Read();
-
-
-        }
-
-        public void viewApprovedLoan()
-        {
-
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("| \t\t\t List of Granted Loans ");
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            List<string> rows = new List<string>();
-            var tempoLine = "";
-            foreach (char letter in File.ReadAllText("./active_loans.txt"))
-            {
-
-                if (letter.Equals('\n'))
+                if (eachLine.Length == 0)
                 {
-                    rows.Add(tempoLine);
-                    tempoLine = "";
-                    //Console.WriteLine();
-                }
-                else
-                {
-                    tempoLine += letter;
-                    //Console.Write(letter);
+                    Console.WriteLine("\t\t\tNO DATABASE");
+
                 }
 
-            }
-            if (File.ReadAllText("./active_loans.txt").Length == 0)
-            {
-                Console.WriteLine("No Database");
-            }
-
-            var counter = 0;
-            foreach (string line in rows)
-            {
-                var eachLine = line.Split("|", StringSplitOptions.RemoveEmptyEntries);
-                if (eachLine[12] == "GRANTED")
+                if (eachLine[12] == DisplayType)
                 {
-                    counter++;
+                    pending = false;
+                    accepted = false;
+                    rejected = false;
+
                     Console.WriteLine("----[ {0} ]-----------------------------------------------------------------------------------", eachLine[0] + " " + eachLine[1]);
                     Console.WriteLine("{0,-5}: {1} ", "ID", counter);
                     Console.WriteLine("{0,-5}: {1} ", "First Name", eachLine[0]);
                     Console.WriteLine("{0,-5}: {1} ", "Last Name", eachLine[1]);
                     Console.WriteLine("{0,-5}: {1} ", "Middle Name", eachLine[2]);
-                    Console.WriteLine("{0,-5}: {1} ", " Date", eachLine[14]);
+                    Console.WriteLine("{0,-5}: {1} ", "Phone", eachLine[3]);
+                    Console.WriteLine("{0,-5}: {1} ", "Salary", eachLine[4]);
+                    Console.WriteLine("{0,-5}: {1} ", "Date", eachLine[14]);
                     Console.WriteLine("{0,-5}: {1} ", "Loan Type", eachLine[5]);
                     Console.WriteLine("{0,-5}: {1} ", "Loan Plan", eachLine[6]);
                     Console.WriteLine("{0,-5}: {1} ", "Loan Purpose", eachLine[7]);
@@ -424,28 +244,78 @@ namespace LoanManagmentSystem
                     Console.WriteLine("{0,-5}: {1} ", "Monthly Payment", Math.Round(double.Parse(eachLine[10]), 2));
                     Console.WriteLine("{0,-5}: {1} ", "Over Due's Penalty", Math.Round(double.Parse(eachLine[11]), 2));
                     Console.WriteLine("{0,-10}: {1} ", "Loan Status", eachLine[12]);
-                    Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
+                    if (eachLine[12] == "REJECTED")
+                    {
+                        Console.WriteLine("{0,-15}: {1} ", "Rejection Reason", eachLine[13]);
 
+                    }
+                    Console.WriteLine("---------------------------------------------------------------------------------------------");
 
                 }
-            }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Press Enter To Continue...");
-            Console.Read();
 
+
+                if (DisplayType == "ALL")
+                {
+                    pending = false;
+                    accepted = false;
+                    rejected = false;
+                    Console.WriteLine("----[ {0} ]-----------------------------------------------------------------------------------", eachLine[0] + " " + eachLine[1]);
+                    Console.WriteLine("{0,-5}: {1} ", "ID", counter);
+                    Console.WriteLine("{0,-5}: {1} ", "First Name", eachLine[0]);
+                    Console.WriteLine("{0,-5}: {1} ", "Last Name", eachLine[1]);
+                    Console.WriteLine("{0,-5}: {1} ", "Middle Name", eachLine[2]);
+                    Console.WriteLine("{0,-5}: {1} ", "Phone", eachLine[3]);
+                    Console.WriteLine("{0,-5}: {1} ", "Salary", eachLine[4]);
+                    Console.WriteLine("{0,-5}: {1} ", "Date", eachLine[14]);
+                    Console.WriteLine("{0,-5}: {1} ", "Loan Type", eachLine[5]);
+                    Console.WriteLine("{0,-5}: {1} ", "Loan Plan", eachLine[6]);
+                    Console.WriteLine("{0,-5}: {1} ", "Loan Purpose", eachLine[7]);
+                    Console.WriteLine("{0,-5}: {1} ", "Loan Amount", eachLine[8]);
+                    Console.WriteLine("{0,-5}: {1} ", "Total Loan Payment", Math.Round(double.Parse(eachLine[9]), 2));
+                    Console.WriteLine("{0,-5}: {1} ", "Monthly Payment", Math.Round(double.Parse(eachLine[10]), 2));
+                    Console.WriteLine("{0,-5}: {1} ", "Over Due's Penalty", Math.Round(double.Parse(eachLine[11]), 2));
+                    Console.WriteLine("{0,-10}: {1} ", "Loan Status", eachLine[12]);
+                    if (eachLine[12] == "REJECTED")
+                    {
+                        Console.WriteLine("{0,-15}: {1} ", "Rejection Reason", eachLine[13]);
+
+                    }
+                    Console.WriteLine("---------------------------------------------------------------------------------------------");
+
+                }
+
+
+            }
+
+
+            if (pending || accepted || rejected )
+            {
+                Console.WriteLine("\t\t\tNO DATABASE");
+                result = false;
+            }
+          
+
+
+            //Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
+            //Console.WriteLine("Press Enter To Continue...");
+            //Console.Read();
+
+            return result;
         }
 
-        public void viewRejectedLoan()
+        public Boolean UpdateLoanStatus(int userId,string newStatus,string rejectionReason)
         {
-            //username
-            //loan type
-            //rejection reason
 
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("| \t\t\t List of Rejected Loans ");
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
+            string result = "";
             List<string> rows = new List<string>();
+            List<string> newCopy = new List<string>();
             var tempoLine = "";
+
+            if (rejectionReason == null)
+            {
+                rejectionReason = "None";
+            }
+
             foreach (char letter in File.ReadAllText("./active_loans.txt"))
             {
 
@@ -462,41 +332,36 @@ namespace LoanManagmentSystem
                 }
 
             }
-            if (File.ReadAllText("./active_loans.txt").Length == 0)
-            {
-                Console.WriteLine("No Database");
-            }
+
             var counter = 0;
             foreach (string line in rows)
             {
+                counter++;
                 var eachLine = line.Split("|", StringSplitOptions.RemoveEmptyEntries);
-                if (eachLine[12] == "REJECTED")
+                
+                if (counter == userId)
                 {
-                    counter++;
-                    Console.WriteLine("----[ {0} ]-----------------------------------------------------------------------------------", eachLine[0] + " " + eachLine[1]);
-                    Console.WriteLine("{0,-5}: {1} ", "ID", counter);
-                    Console.WriteLine("{0,-5}: {1} ", "First Name", eachLine[0]);
-                    Console.WriteLine("{0,-5}: {1} ", "Last Name", eachLine[1]);
-                    Console.WriteLine("{0,-5}: {1} ", "Middle Name", eachLine[2]);
-                    Console.WriteLine("{0,-5}: {1} ", " Date", eachLine[14]);
-                    Console.WriteLine("{0,-5}: {1} ", "Loan Type", eachLine[5]);
-                    Console.WriteLine("{0,-5}: {1} ", "Loan Plan", eachLine[6]);
-                    Console.WriteLine("{0,-5}: {1} ", "Loan Purpose", eachLine[7]);
-                    Console.WriteLine("{0,-5}: {1} ", "Over Due's Penalty", Math.Round(double.Parse(eachLine[11]),2));
-                    Console.WriteLine("{0,-5}: {1} ", "Loan Status", eachLine[12]);
-                    Console.WriteLine("{0,-15}: {1} ", "|Rejection Reason", eachLine[13]);
-                    Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-
-
+                    result = eachLine[0] + "|" + eachLine[1] + "|" + eachLine[2] + "|" + eachLine[3] + "|" + eachLine[4] + "|" + eachLine[5] + "|" + eachLine[6] + "|" + eachLine[7] + "|" + eachLine[8] + "|" + eachLine[9] + "|" + eachLine[10] + "|" + eachLine[11] + "|" + newStatus + "|" + rejectionReason + "|" + eachLine[14] + "|";
+                    
+                    newCopy.Add(result);
+                }
+                else
+                {
+                    newCopy.Add(line);
                 }
             }
-            Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
-            Console.WriteLine("Press Enter To Continue...");
-            Console.Read();
+
+            using (TextWriter tw = new StreamWriter("active_loans.txt"))
+            {
+                foreach (String s in newCopy)
+                    tw.WriteLine(s);
+            }
+            
 
 
+
+            return true;
         }
-
         public static string ViewLoanDataByCustomerID(int ID)
         {
             string result = "";

@@ -6,7 +6,7 @@ namespace LoanManagmentSystem
 {
     class Report
     {
-        public double MOnthlyGivenLoanInMoney = 0.0;
+        public double MonthlyGivenLoanInMoney = 0.0;
         public double MonthlyPaidLoanInMoney = 0.0;
         public double AnnuallyGivenOutLoan = 0.0;
         public double AnnuallyPaidLoanMoney = 0.0;
@@ -19,7 +19,7 @@ namespace LoanManagmentSystem
 
                 MenuPoint:
 
-                new Menu().reportMenu();
+                new Menu().GetMenu("REPORTS");
 
                 Console.Write("Select Service : _\b");
                 string choice = Console.ReadLine();
@@ -100,11 +100,20 @@ namespace LoanManagmentSystem
                     
                 }
             }
-            MOnthlyGivenLoanInMoney = sum;
+            MonthlyGivenLoanInMoney = sum;
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
             Console.WriteLine("|\t\t\tView Monthly Given Loans");
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
-            Console.WriteLine("|\t\tTotal Loans Given this Month [{0}] : {1} Birr",DateTime.Now.ToString("MMMM"), Math.Round(MOnthlyGivenLoanInMoney, 2));
+            if (MonthlyGivenLoanInMoney == 0)
+            {
+                Console.WriteLine("No Database");
+
+            }
+            else
+            {
+                Console.WriteLine("|\t\tTotal Loans Given this Month [{0}] : {1} Birr", DateTime.Now.ToString("MMMM"), Math.Round(MonthlyGivenLoanInMoney, 2));
+
+            }
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
 
         }
@@ -154,7 +163,16 @@ namespace LoanManagmentSystem
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
             Console.WriteLine("|\t\t\tView Recently Paid Loan in {0}",DateTime.Now.ToString("MMMM"));
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
-            Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Birr", Math.Round(MonthlyPaidLoanInMoney, 2));
+            if (MonthlyPaidLoanInMoney == 0)
+            {
+                Console.WriteLine("No Database");
+
+            }
+            else
+            {
+                Console.WriteLine("|\t\tTotal Loan Requests Recently : {0} Birr", Math.Round(MonthlyPaidLoanInMoney, 2));
+
+            }
             Console.WriteLine("-----------------------------------------------------------------------------------------------");
 
         }

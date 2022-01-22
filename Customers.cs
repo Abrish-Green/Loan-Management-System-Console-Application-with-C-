@@ -21,7 +21,7 @@ namespace LoanManagmentSystem
             {
 
                 MenuPoint:
-                new Menu().customerMenu();
+                new Menu().GetMenu("CUSTOMERS");
                 Console.Write("Choose Selection:_\b");
                 string menuChoice = Console.ReadLine();
 

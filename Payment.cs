@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 namespace LoanManagmentSystem
 {
-    class Payment
+     class Payment
     {
         public int payeeID;
         public string payeeName;
@@ -19,19 +19,17 @@ namespace LoanManagmentSystem
         public Boolean isCovered = false;
         public Boolean GoOut = false;
 
-
+        Utilits utilits = new Utilits();
 
         public Payment()
         {
 
-
-           
             try
             {
 
                 MenuPoint:
 
-                new Menu().paymentMenu();
+                new Menu().GetMenu("PAYMENT");
 
                 Console.Write("Select Service : _\b");
                 string choice = Console.ReadLine();
@@ -46,15 +44,18 @@ namespace LoanManagmentSystem
                         break;
                     case "3":
                         Console.Write("Select User [Use ID]: ");
-                        int chooseUser_ = int.Parse(Console.ReadLine());
-                        viewPaymentLogByUserID(chooseUser_);
+                        string chooseUser_ = Console.ReadLine();
+                        int chooseUser__ = int.Parse(utilits.InputVarAndValidate(chooseUser_.ToString(), "int", "Selection")[2].ToString());
+                        viewPaymentLogByUserID(chooseUser__);
                         break;
                     case "4":
                         viewPaymentActiveUsers();
                         Console.Write("Select User [Use ID]: ");
-                        int choose = int.Parse(Console.ReadLine());
-                        
-                        
+                        string choose_ = Console.ReadLine();
+                        int choose = int.Parse(utilits.InputVarAndValidate(choose_, "int", "Selection")[2].ToString());
+
+
+
                         if (getPaymentInfoByUserID(choose) != "")
                         {
                             if (getPaymentInfoByUserID(choose).Split("|")[5][0].ToString() == "-".ToString() || getPaymentInfoByUserID(choose).Split("|")[5][0].ToString() == "0".ToString())
@@ -110,7 +111,8 @@ namespace LoanManagmentSystem
             viewPaymentActiveUsers();
             //Enter Userid
             Console.Write("Select User [Use ID]: ");
-            int chooseUser = int.Parse(Console.ReadLine());
+            string chooseUser_ = Console.ReadLine();
+            int chooseUser = int.Parse(utilits.InputVarAndValidate(chooseUser_, "int", "Selection")[2].ToString());
             if (getPaymentInfoByUserID(chooseUser) != "")
             {
                 if (getPaymentInfoByUserID(chooseUser).Split("|")[5][0].ToString() == "-".ToString() || getPaymentInfoByUserID(chooseUser).Split("|")[5][0].ToString() == "0".ToString())
@@ -143,12 +145,17 @@ namespace LoanManagmentSystem
                     tempPenalty = double.Parse(Data[10]);
 
                     Console.Write("|Enter Pay Amount: ");
-                    payedAmount = double.Parse(Console.ReadLine());
+                    string payedAmount_ = Console.ReadLine();
+                    payedAmount = double.Parse(utilits.InputVarAndValidate(chooseUser_, "int", "Pay Amount")[2].ToString());
+
+
                     //trace day payment
-                    Program.TotalReceivedLoanMoney += payedAmount;// add to the global variable
+                    Home.TotalReceivedLoanMoneyInBirr += payedAmount;// add to the global variable
 
                     Console.Write("|Is There Any Penalty [Y/N ]: ");
                     string penaltys = Console.ReadLine();
+                    penaltys = utilits.InputVarAndValidate(chooseUser_, "string", "Penalty")[2].ToString();
+
 
 
 
@@ -158,7 +165,7 @@ namespace LoanManagmentSystem
                         case "y":
 
                             penaltyPaymentAmount = tempPenalty;
-                            Program.TotalReceivedLoanMoney += tempPenalty;
+                            Home.TotalReceivedLoanMoneyInBirr += tempPenalty;
                             break;
                         default:
                             penaltyPaymentAmount = 0;
@@ -262,7 +269,7 @@ namespace LoanManagmentSystem
         {
             // id payee Payment Date	payedamount	todayInterest	remainingAmount	mothName remainingMonthly penalty  next payment Paid	Remaining Balance
             double todaysInterestInBirr = (InterestRate / totalMonth) * remainingLoanAmount - (remainingLoanAmount);
-            Program.TotalReceivedLoanMoney += payedAmount;
+            Home.TotalReceivedLoanMoneyInBirr += payedAmount;
             if (remainingLoanAmount <= 0)
             {
                 var line = payeeID + "|" + payeeName + "|" + payedDate + "|" + Math.Round(payedAmount, 2) + "|" + Math.Round(todaysInterestInBirr, 2) + "|" + 0 + "|" + payedMonthName + "|" + Math.Round(remainingMonthlyPayment, 2)  + "|" + Math.Round(penaltyPaymentAmount, 2) + "|" + nextPaymentDate + "|" + "PAID";
